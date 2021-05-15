@@ -1,0 +1,20 @@
+{
+  "name": "medium-nodejs-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandrofahur/medium-nodejs-cli.git"
+  },
+  "author": "Leandro Miranda Fahur Machado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leandrofahur/medium-nodejs-cli/issues"
+  },
+  "homepage": "https://github.com/leandrofahur/medium-nodejs-cli#readme",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "yargs": "^17.0.1"
+  }
+}
