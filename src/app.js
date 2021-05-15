@@ -1,4 +1,7 @@
 const yargs = require("yargs");
+const Phonebook = require("./models/Phonebook");
+
+const phonebook = new Phonebook();
 
 yargs.usage("\nUsage: $0 [cmd] <args>").alias("h", "help");
 
@@ -18,7 +21,7 @@ yargs
       },
     },
     function (argv) {
-      console.log("add");
+      phonebook.add();
     }
   )
   .example("node $0 add --name='John Doe' --phone='0123456789'");
@@ -35,7 +38,7 @@ yargs
       },
     },
     function () {
-      console.log("search");
+      phonebook.search();
     }
   )
   .example("node $0 search --name='John Doe'");
@@ -52,14 +55,14 @@ yargs
       },
     },
     function (argv) {
-      console.log("remove");
+      phonebook.remove();
     }
   )
   .example("node $0 remove --name='John Doe'");
 
 yargs
   .command("show", "Display all contacts", function () {
-    console.log("show");
+    Phonebook.show();
   })
   .example("node $0 show");
 
