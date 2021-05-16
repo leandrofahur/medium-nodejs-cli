@@ -21,7 +21,7 @@ yargs
       },
     },
     function (argv) {
-      phonebook.add();
+      phonebook.add(argv.name, argv.phone);
     }
   )
   .example("node $0 add --name='John Doe' --phone='0123456789'");
@@ -37,8 +37,8 @@ yargs
         demandOption: true,
       },
     },
-    function () {
-      phonebook.search();
+    function (argv) {
+      phonebook.search(argv.name);
     }
   )
   .example("node $0 search --name='John Doe'");
@@ -55,14 +55,14 @@ yargs
       },
     },
     function (argv) {
-      phonebook.remove();
+      phonebook.remove(argv.name);
     }
   )
   .example("node $0 remove --name='John Doe'");
 
 yargs
   .command("show", "Display all contacts", function () {
-    Phonebook.show();
+    phonebook.show();
   })
   .example("node $0 show");
 

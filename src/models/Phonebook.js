@@ -1,67 +1,74 @@
 const fs = require("fs");
+const path = require("path");
+const chalk = require("chalk");
 
 class Phonebook {
-  constructor() {}
-  add() {
-    console.log("add");
+  constructor() {
+    this.path = path.join(__dirname, "..", "data");
+    const parsedData = this.load();
+
+    if (parsedData) {
+      this.contacts = [...parsedData];
+    } else {
+      this.contacts = [];
+    }
   }
 
-  remove() {
-    console.log("remove");
+  add(name, phone) {
+    if (this.search(name)) {
+      console.warn(chalk.yellow("User already exists"));
+      return;
+    }
+
+    const newContact = {
+      name: name,
+      phone: phone,
+    };
+
+    this.contacts.push(newContact);
+    console.log(chalk.green("Added: " + name));
+    this.save();
   }
 
-  search() {
-    console.log("search");
+  remove(name) {
+    if (this.search(name)) {
+      const index = this.contacts.findIndex((contact, index) => {
+        return contact.name === name;
+      });
+
+      this.contacts.splice(index, 1);
+      console.log(chalk.green("Removed: " + name));
+      this.save();
+    } else {
+      console.warn(chalk.yellow("This contact does not exist!"));
+    }
   }
 
-  static show() {
-    console.log("show");
+  search(name) {
+    return this.contacts.find((contact) => contact.name === name);
+  }
+
+  save() {
+    const JSONdata = JSON.stringify(this.contacts);
+    fs.writeFileSync(`${this.path}/contacts.json`, JSONdata);
+  }
+
+  load() {
+    const data = fs.readFileSync(`${this.path}/contacts.json`);
+    return JSON.parse(data);
+  }
+
+  show() {
+    if (this.contacts.length > 0) {
+      this.contacts.map((contact) =>
+        console.log(
+          chalk.blue(`Name: ${contact.name}\nPhone:${contact.phone}\n`)
+        )
+      );
+    } else {
+      console.error(chalk.red("There is no user on this phonebook"));
+    }
   }
 }
 
 module.exports = Phonebook;
-
-// class Phonebook {
-//   constructor() {
-//     this.Load();
-//     this.contacts = [...this.parsedData];
-//   }
-
-//   Add(name, phone) {
-//     const isAlreadyContact = this.contacts.find(
-//       (contact) => contact.name === name && contact.phone === phone
-//     );
-
-//     if (isAlreadyContact) {
-//       console.log("User already exists!");
-//       return;
-//     }
-
-//     const newContact = {
-//       name,
-//       phone,
-//     };
-
-//     this.contacts.push(newContact);
-//     this.Save();
-//   }
-
-//   Remove(name) {
-//     this.contacts = this.contacts.filter((contact) => contact.name !== name);
-//     this.Save();
-//   }
-
-//   Save() {
-//     const JSONdata = JSON.stringify(this.contacts);
-//     fs.writeFileSync("phonebook.json", JSONdata);
-//   }
-
-//   Load() {
-//     const data = fs.readFileSync("phonebook.json");
-//     this.parsedData = JSON.parse(data);
-//   }
-
-//   Show() {
-//     console.log(this.contacts);
-//   }
-// }
